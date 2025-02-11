@@ -4,7 +4,14 @@ import streamlit as st
 
 def init_db():
     """Initialize SQLite database"""
-    db_path = Path(__file__).parent / 'data' / 'user_calculations.db'
+    # Create data directory if it doesn't exist
+    data_dir = Path(__file__).parent / 'data'
+    data_dir.mkdir(exist_ok=True)
+    
+    # Create and connect to database
+    db_path = data_dir / 'user_calculations.db'
+    print(f"Creating database at: {db_path}")  # Debug print
+    
     conn = sqlite3.connect(str(db_path))
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS calculations
