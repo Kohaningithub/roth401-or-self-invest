@@ -4,6 +4,26 @@ from state_tax import StateTaxManager
 from scipy.stats import norm
 import streamlit as st
 
+# Try to import scipy, use fallback if not available
+try:
+    from scipy import stats
+    norm = stats.norm
+except ImportError:
+    # Fallback implementation of normal distribution
+    class NormalDist:
+        def rvs(self, loc=0, scale=1, size=None):
+            """Generate random normal variates"""
+            return np.random.normal(loc=loc, scale=scale, size=size)
+        
+        def ppf(self, q):
+            """Percent point function (inverse of cdf)"""
+            if q == 0.05:
+                return -1.645  # 5th percentile
+            elif q == 0.95:
+                return 1.645   # 95th percentile
+            return 0  # mean
+    norm = NormalDist()
+
 class InvestmentComparator:
     def __init__(self):
         # 基础参数
