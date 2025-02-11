@@ -35,15 +35,15 @@ def get_contribution_limits(age, annual_income):
         'max_employee_pct': max_employee_pct
     }
 
-def calculate_match_limit(total_limit, employee_contribution, annual_income, employer_match_pct):
+def calculate_match_limit(total_limit, employee_contribution, annual_income, employer_match):
     """Calculate maximum matchable percentage based on remaining room"""
     # Calculate remaining room for employer contributions
-    employee_dollar_contribution = annual_income * (employee_contribution/100)
-    remaining_contribution_room = total_limit - employee_dollar_contribution
+    employee_dollar_contribution = float(annual_income * (employee_contribution/100))
+    remaining_contribution_room = float(total_limit - employee_dollar_contribution)
     
     # Convert to matchable percentage (considering employer match rate)
-    max_match_limit = (remaining_contribution_room / annual_income) * 100
-    max_match_limit = max_match_limit * (100 / employer_match_pct) if employer_match_pct > 0 else 0
+    max_match_limit = float((remaining_contribution_room / annual_income) * 100)
+    max_match_limit = float(max_match_limit * (100 / employer_match) if employer_match > 0 else 0.0)
     
     return max_match_limit
 
@@ -639,9 +639,10 @@ def main():
     # In the main function, update the match_limit input
     match_limit = st.number_input(
         "Maximum Matchable Salary %", 
-        value=float(min(6.0, max_match)),  # Convert to float
-        min_value=0.0,  # Ensure float
+        value=6.0 if max_match >= 6.0 else float(max_match),  # Ensure float
+        min_value=0.0,  # Already float
         max_value=float(max_match),  # Convert to float
+        step=0.1,  # Add step for decimal precision
         help=get_match_help_text(
             current_age, 
             annual_income, 
