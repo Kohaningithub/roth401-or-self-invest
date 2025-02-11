@@ -1,0 +1,6 @@
+user_id,timestamp,current_age,annual_income,state,retirement_age,roth_contribution,employer_match,match_limit,inflation_rate,salary_growth,401k_return,active_return,passive_return,roth_value,self_managed_value,difference
+7c9b87b5-f2d1-4583-bda5-4fdd5757c1a8,2025-02-10 18:53:27,22,100000,Alabama,65,10.0,50.0,6.0,3.0,4.0,10.0,12.0,10.0,11530328.93,8734953.69,-24.2
+7c9b87b5-f2d1-4583-bda5-4fdd5757c1a8,2025-02-10 18:53:44,22,100000,California,65,10.0,50.0,6.0,3.0,4.0,10.0,12.0,10.0,11530328.93,8517807.83,-26.1
+7c9b87b5-f2d1-4583-bda5-4fdd5757c1a8,2025-02-10 18:55:09,22,100000,Alabama,65,10.0,50.0,0.0,3.0,4.0,10.0,12.0,10.0,8673333.03,8734953.69,0.7
+7c9b87b5-f2d1-4583-bda5-4fdd5757c1a8,2025-02-10 18:55:27,22,100000,Alabama,65,10.0,50.0,0.0,3.0,4.0,10.0,12.0,10.0,8673333.03,8734953.69,0.7
+7c9b87b5-f2d1-4583-bda5-4fdd5757c1a8,2025-02-10 18:55:35,22,100000,California,65,10.0,50.0,0.0,3.0,4.0,10.0,12.0,10.0,8673333.03,8517807.83,-1.8

@@ -429,7 +429,7 @@ def main():
             
             match_limit = st.number_input(
                 "Maximum Matchable Salary %", 
-                value=min(6.0, max_match),
+                value=min(0.0, max_match),
                 min_value=0.0,
                 max_value=max_match,
                 help=get_match_help_text(
