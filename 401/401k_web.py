@@ -621,14 +621,6 @@ def main():
                 - Based on: Age {current_age}
                 """)
 
-            # Add warning for high incomes where limits affect percentages
-            if max_match < 6.0:  # Standard match becoming limited
-                st.info(f"""
-                ℹ️ **Note on Contribution Limits**
-                Due to your income level (${annual_income:,.0f}), the maximum matchable percentage is limited to {max_match:.1f}% 
-                to stay within 2025 IRS limits of ${limits['total_limit']:,.0f} total contributions.
-                """)
-
     with tab_history:
         st.subheader("Compare Calculations")
         if has_previous_calculations(user_id):
@@ -636,21 +628,6 @@ def main():
         else:
             st.info("Make your first calculation to see your history here!")
 
-    # In the main function, update the match_limit input
-    match_limit = st.number_input(
-        "Maximum Matchable Salary %", 
-        value=6.0 if max_match >= 6.0 else float(max_match),  # Ensure float
-        min_value=0.0,  # Already float
-        max_value=float(max_match),  # Convert to float
-        step=0.1,  # Add step for decimal precision
-        help=get_match_help_text(
-            current_age, 
-            annual_income, 
-            employer_match, 
-            max_match,
-            limits['total_limit']
-        )
-    )
     with tab_methodology:
         st.markdown("""
         ### Model Methodology and Assumptions
