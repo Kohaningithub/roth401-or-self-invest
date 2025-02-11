@@ -105,48 +105,22 @@ def get_or_create_user_id():
     return st.session_state.user_id
 
 def log_user_inputs_to_csv(inputs_dict, user_id):
-    """Log all user inputs to a single CSV file with user ID"""
     try:
-        # Create data directory if it doesn't exist
-        data_dir = Path(__file__).parent / 'data'
-        data_dir.mkdir(exist_ok=True)
-        
-        # Use a single CSV file for all inputs
-        csv_path = data_dir / 'all_user_inputs.csv'
-        
-        # Add user_id to flat_data
-        flat_data = {
-            'user_id': user_id,
-            'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            'current_age': inputs_dict['Basic Parameters']['Current Age'],
-            'annual_income': inputs_dict['Basic Parameters']['Annual Income'],
-            'state': inputs_dict['Basic Parameters']['State'],
-            'retirement_age': inputs_dict['Basic Parameters']['Retirement Age'],
-            'roth_contribution': inputs_dict['Basic Parameters']['Roth Contribution'].rstrip('%'),
-            'employer_match': inputs_dict['Basic Parameters']['Employer Match'].rstrip('%'),
-            'match_limit': inputs_dict['Basic Parameters']['Match Limit'].rstrip('%'),
-            'inflation_rate': inputs_dict['Market Assumptions']['Inflation Rate'].rstrip('%'),
-            'salary_growth': inputs_dict['Market Assumptions']['Salary Growth'].rstrip('%'),
-            '401k_return': inputs_dict['Market Assumptions']['401k Return'].rstrip('%'),
-            'active_return': inputs_dict['Market Assumptions']['Active Return'].rstrip('%'),
-            'passive_return': inputs_dict['Market Assumptions']['Passive Return'].rstrip('%'),
-            'roth_value': inputs_dict['Results']['Roth 401k Value'].lstrip('$').replace(',', ''),
-            'self_managed_value': inputs_dict['Results']['Self-Managed Value'].lstrip('$').replace(',', ''),
-            'difference': inputs_dict['Results']['Difference'].rstrip('%')
-        }
-        
+        # Convert the new data to DataFrame
         df_new = pd.DataFrame([flat_data])
         
-        try:
-            df_existing = pd.read_csv(csv_path)
-            df_updated = pd.concat([df_existing, df_new], ignore_index=True)
-        except FileNotFoundError:
-            df_updated = df_new
+        # Get existing data from session state
+        if 'all_user_inputs' not in st.session_state:
+            st.session_state.all_user_inputs = pd.DataFrame()
         
-        df_updated.to_csv(csv_path, index=False)
+        # Concatenate new data
+        st.session_state.all_user_inputs = pd.concat(
+            [st.session_state.all_user_inputs, df_new], 
+            ignore_index=True
+        )
         
     except Exception as e:
-        print(f"Error logging inputs: {str(e)}")
+        st.error(f"Error logging inputs: {str(e)}")
 
 def show_user_history(user_id):
     """Display previous calculations for the current user"""
