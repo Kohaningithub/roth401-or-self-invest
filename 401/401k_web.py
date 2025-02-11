@@ -128,21 +128,12 @@ def log_user_inputs_to_csv(inputs_dict, user_id):
             'difference': inputs_dict['Results']['Difference'].rstrip('%')
         }
 
-        # Convert to DataFrame
-        df_new = pd.DataFrame([flat_data])
-        
-        # Get existing data from session state
-        if 'all_user_inputs' not in st.session_state:
-            st.session_state.all_user_inputs = pd.DataFrame()
-        
-        # Concatenate new data
-        st.session_state.all_user_inputs = pd.concat(
-            [st.session_state.all_user_inputs, df_new], 
-            ignore_index=True
-        )
-        
-        # Save to session state
-        st.session_state.all_user_inputs.to_csv('all_user_inputs.csv', index=False)
+        # Initialize session state if not exists
+        if 'user_history' not in st.session_state:
+            st.session_state.user_history = []
+
+        # Append new data to history
+        st.session_state.user_history.append(flat_data)
         
     except Exception as e:
         st.error(f"Error logging inputs: {str(e)}")
@@ -150,11 +141,16 @@ def log_user_inputs_to_csv(inputs_dict, user_id):
 def show_user_history(user_id):
     """Display previous calculations for the current user"""
     try:
-        if 'all_user_inputs' not in st.session_state:
-            st.session_state.all_user_inputs = pd.DataFrame()
+        if 'user_history' not in st.session_state:
+            st.session_state.user_history = []
             return
+
+        # Convert list of dictionaries to DataFrame
+        df = pd.DataFrame(st.session_state.user_history)
         
-        df = st.session_state.all_user_inputs
+        if len(df) == 0:
+            return
+            
         user_history = df[df['user_id'] == user_id].sort_values('timestamp', ascending=False)
         
         if len(user_history) == 0:
@@ -190,8 +186,11 @@ def show_user_history(user_id):
         
         if len(user_history) > 0:
             if st.button("Clear History", key="clear_history_button"):
-                df_updated = df[df['user_id'] != user_id]
-                df_updated.to_csv('all_user_inputs.csv', index=False)
+                # Clear history for this user
+                st.session_state.user_history = [
+                    entry for entry in st.session_state.user_history 
+                    if entry['user_id'] != user_id
+                ]
                 st.success("Your calculation history has been cleared!")
                 st.rerun()
             
@@ -200,19 +199,10 @@ def show_user_history(user_id):
 
 def has_previous_calculations(user_id):
     """Check if user has any previous calculations"""
-    try:
-        data_dir = Path(__file__).parent / 'data'
-        csv_path = data_dir / 'all_user_inputs.csv'
-        
-        if not csv_path.exists():
-            return False
-        
-        df = pd.read_csv(csv_path)
-        user_history = df[df['user_id'] == user_id]
-        
-        return len(user_history) > 0
-    except Exception:
+    if 'user_history' not in st.session_state:
         return False
+    
+    return any(entry['user_id'] == user_id for entry in st.session_state.user_history)
 
 def main():
     # Get or create persistent user ID
