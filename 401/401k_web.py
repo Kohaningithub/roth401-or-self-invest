@@ -636,6 +636,20 @@ def main():
         else:
             st.info("Make your first calculation to see your history here!")
 
+    # In the main function, update the match_limit input
+    match_limit = st.number_input(
+        "Maximum Matchable Salary %", 
+        value=float(min(6.0, max_match)),  # Convert to float
+        min_value=0.0,  # Ensure float
+        max_value=float(max_match),  # Convert to float
+        help=get_match_help_text(
+            current_age, 
+            annual_income, 
+            employer_match, 
+            max_match,
+            limits['total_limit']
+        )
+    )
     with tab_methodology:
         st.markdown("""
         ### Model Methodology and Assumptions
