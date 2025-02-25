@@ -2,7 +2,7 @@ name: Keep Alive Workflow
 
 on:
   schedule:
-    - cron: '*/30 * * * *'  # Runs every 30 minutes
+    - cron: '*/1000 * * * *'  # Runs every 30 minutes
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
