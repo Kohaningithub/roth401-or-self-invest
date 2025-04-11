@@ -271,13 +271,13 @@ def main():
     # Create comparison table with improved structure
     comparison_data = {
         "Feature": [
-            "💰 Contributions",
-            "📈 Growth & Withdrawals",
-            "🤝 Employer Benefits",
-            "🎯 Investment Options",
-            "🎮 Investment Control",
-            "💵 Liquidity",
-            "📊 Annual Limits (2025)",
+            "Contributions",
+            "Growth & Withdrawals",
+            "Employer Benefits",
+            "Investment Options",
+            "Investment Control",
+            "Liquidity",
+            "Annual Limits (2025)",
             "⚡ Early Withdrawal"
         ],
         "Roth 401(k)": [
