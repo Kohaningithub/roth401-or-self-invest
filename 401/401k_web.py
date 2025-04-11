@@ -283,7 +283,7 @@ def main():
         "Roth 401(k)": [
             "After-tax dollars",
             "Tax-free",
-            "✅ Employer match available",
+            "Employer match available",
             "Limited (plan-specific funds)",
             "Limited to plan options",
             "Limited until retirement",
@@ -293,7 +293,7 @@ def main():
         "Self-Managed Portfolio": [
             "After-tax dollars",
             "Subject to capital gains tax",
-            "❌ No employer match",
+            "No employer match",
             "Unlimited (stocks, ETFs, etc.)",
             "Full control",
             "Fully liquid",
